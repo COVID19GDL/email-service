@@ -1,2 +1,2 @@
 # email-service
-Code to create an Email Service using AWS SES in Flask Framework
+Email Service Sender by using AWS SES in Flask Framework
