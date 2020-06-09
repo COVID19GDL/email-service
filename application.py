@@ -30,7 +30,7 @@ def send_email():
             return jsonify(data), 400
 
         token_string = token.split()
-        if not len(token_string) == 2 or not token_string[0] == 'Token' or not token_string[1] == <TOKEN_STRING>:
+        if not len(token_string) == 2 or not token_string[0] == 'Token' or not token_string[1] == '523736942fa2c02ceda6b49cdf31eb16893f18267ed2e9da5e50f9148efbb7d8':
             data = {
                 'status': 'error',
                 'message': 'user not authorized'
@@ -50,9 +50,11 @@ def send_email():
         RECIPIENT = json_data['to']
         SUBJECT = json_data['subject']
         BODY_HTML = json_data['html_body']
+        CC = []
 
         if 'cc' in json_data:
-            CC = json_data['cc']
+            if json_data['cc']:
+                CC = json_data['cc']
 
         CHARSET = "UTF-8"
 
@@ -66,13 +68,14 @@ def send_email():
         msg['From'] = SENDER 
         msg['To'] = RECIPIENT
 
-        if 'cc' in json_data:
-            msg['Cc'] = CC
+        if CC:
+            msg['Cc'] = ','.join(CC)
 
         destinations = [RECIPIENT]
 
-        if 'cc' in json_data:
-            destinations.append(CC)
+        if CC:
+            for email in CC:
+                destinations.append(email)
 
         msg_body = MIMEMultipart('alternative')
         htmlpart = MIMEText(BODY_HTML.encode(CHARSET), 'html', CHARSET)
@@ -96,7 +99,6 @@ def send_email():
             att.add_header('Content-Disposition', 'attachment', filename=filename)
 
             msg.attach(att)
-
         try:
             response = client.send_raw_email(
                 Source=SENDER,
@@ -107,7 +109,10 @@ def send_email():
             )
         except ClientError as e:
             print(e.response['Error']['Message'])
-            data = {'status': 'error'}
+            data = {
+                'status': 'error',
+                'description': e.response['Error']['Message']
+            }
             return jsonify(data), 500
         else:
             print("Email sent! Message ID:"),
