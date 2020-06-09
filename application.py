@@ -30,7 +30,7 @@ def send_email():
             return jsonify(data), 400
 
         token_string = token.split()
-        if not len(token_string) == 2 or not token_string[0] == 'Token' or not token_string[1] == '523736942fa2c02ceda6b49cdf31eb16893f18267ed2e9da5e50f9148efbb7d8':
+        if not len(token_string) == 2 or not token_string[0] == 'Token' or not token_string[1] == <TOKEN_STRING>:
             data = {
                 'status': 'error',
                 'message': 'user not authorized'
