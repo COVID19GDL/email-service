@@ -46,7 +46,7 @@ def send_email():
 
         AWS_REGION = "us-west-2"
 
-        SENDER = "no-reply <hola@rutacovid.org>"
+        SENDER = "medicos@rutacovid.org"
         RECIPIENT = json_data['to']
         SUBJECT = json_data['subject']
         BODY_HTML = json_data['html_body']
