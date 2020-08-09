@@ -126,5 +126,5 @@ app.add_url_rule('/send-email', 'send-email',  (lambda: send_email()), methods=[
 if __name__ == "__main__":
     # Setting debug to True enables debug output. This line should be
     # removed before deploying a production app.
-    app.debug = False
-    app.run(host='0.0.0.0')
+    app.debug = True
+    app.run()
