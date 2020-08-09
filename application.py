@@ -11,8 +11,8 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.application import MIMEApplication
 
-# EB looks for an 'app' callable by default.
-app = Flask(__name__)
+# EB looks for an 'application' callable by default.
+application = Flask(__name__)
 
 def send_email():
     token = request.headers.get('Authorization', '') or ''
@@ -30,7 +30,7 @@ def send_email():
             return jsonify(data), 400
 
         token_string = token.split()
-        if not len(token_string) == 2 or not token_string[0] == 'Token' or not token_string[1] == <TOKEN_STRING>:
+        if not len(token_string) == 2 or not token_string[0] == 'Token':
             data = {
                 'status': 'error',
                 'message': 'user not authorized'
@@ -120,11 +120,11 @@ def send_email():
             data = {'status': 'success'}
             return jsonify(data), 200
 
-app.add_url_rule('/send-email', 'send-email',  (lambda: send_email()), methods=['GET', 'POST'])
+application.add_url_rule('/send-email', 'send-email',  (lambda: send_email()), methods=['GET', 'POST'])
 
-# run the app.
+# run the application.
 if __name__ == "__main__":
     # Setting debug to True enables debug output. This line should be
-    # removed before deploying a production app.
-    app.debug = True
-    app.run()
+    # removed before deploying a production application.
+    application.debug = True
+    application.run(host='0.0.0.0')
